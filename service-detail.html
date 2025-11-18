@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Details - Dikatlego Engineering</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            color: #e8ae1a;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2px;
+            text-decoration: none;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .service-detail {
+            background: white;
+            border-radius: 2px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .service-header {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .service-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .pricing-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            padding: 2rem;
+            color: white;
+        }
+
+        .pricing-overlay h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-overlay .price {
+            font-size: 1.5rem;
+            color: #e8ae1a;
+            font-weight: bold;
+        }
+
+        .service-content {
+            padding: 2rem;
+        }
+
+        .description-section {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .description-section h2 {
+            color: #1a202c;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .description-section p {
+            color: #4a5568;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .inquiry-form h2 {
+            color: #1a202c;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #1a202c;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group label .required {
+            color: #ef4444;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 2px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #e8ae1a;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #e8ae1a;
+            color: #4f5051;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 2px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background: #d09915;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(232, 174, 26, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(79, 80, 81, 0.3);
+            border-top-color: #4f5051;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .submit-btn.loading .spinner {
+            display: block;
+        }
+
+        .submit-btn.loading .btn-text {
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .success-message {
+            display: none;
+            background: #10b981;
+            color: white;
+            padding: 1rem;
+            border-radius: 2px;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .service-header {
+                height: 300px;
+            }
+
+            .pricing-overlay h1 {
+                font-size: 2rem;
+            }
+
+            .pricing-overlay .price {
+                font-size: 1.25rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .service-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+
+
+
+    <style>
+  
+
+        /* Navbar Styles */
+        nav {
+           
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(135deg,  #e8ae1a 0%,  #755d21);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0.5rem 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid  #ffd25f;
+            
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            height: 60px;
+        }
+
+        .logo img {
+            height:150px;
+            width: 150px;
+            
+           
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        
+        .nav-menu li a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #667eea;
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu li a:hover {
+            color: #667eea;
+        }
+
+        .nav-menu li a:hover::after {
+            width: 100%;
+        }
+
+        /* Burger Menu */
+        .burger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .burger span {
+            width: 25px;
+            height: 3px;
+            background: #ffffff;
+            border-radius: 0px;
+            transition: all 0.3s ease;
+        }
+
+        /* Burger Animation */
+        .burger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .burger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .burger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Content */
+        .content {
+            padding-top: 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            color: white;
+        }
+
+        .content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .content p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .burger {
+                display: flex;
+            }
+
+            .nav-menu {
+                color: #fff;
+                border-top: 3.5px solid  #ffd25f;
+                border-bottom: 3.5px solid  #ffd25f;
+                
+                position: fixed;
+                left: 0;
+                top: 70px;
+                flex-direction: column;
+                background: linear-gradient(135deg, #e8ae1a  0%, rgb(69, 83, 108));
+                width: 100%;
+                text-align: center;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.4s ease-in-out;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-menu.active {
+                max-height: 400px;
+            }
+
+            .nav-menu li {
+                color: #fff;
+                padding: 1.5rem 0;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            }
+
+            .nav-menu li a::after {
+                display: none;
+
+            }
+
+            .content h1 {
+                font-size: 2rem;
+                color: #fff;
+            }
+
+            .content p {
+                font-size: 1rem;
+                color: #fff;
+            }
+        }
+    </style>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <img src="logo.png" alt="Logo">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Portfolio</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+
+    <script>
+        const burger = document.querySelector('.burger');
+        const navMenu = document.querySelector('.nav-menu');
+        const navLinks = document.querySelectorAll('.nav-menu li a');
+
+        // Toggle menu
+        burger.addEventListener('click', () => {
+            burger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                burger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!burger.contains(e.target) && !navMenu.contains(e.target)) {
+                burger.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+
+<br>
+
+
+
+
+
+
+
+
+
+    <div class="container">
+        <a href="services.html" class="back-btn">
+            ← Back to Services
+        </a>
+
+        <div class="service-detail">
+            <!-- Service Header with Image -->
+            <div class="service-header">
+                <img src="" alt="" id="serviceImage">
+                <div class="pricing-overlay">
+                    <h1 id="serviceName">Loading...</h1>
+                    <div class="price" id="servicePrice"></div>
+                </div>
+            </div>
+
+            <!-- Service Content -->
+            <div class="service-content">
+                <!-- Description Section -->
+                <div class="description-section">
+                    <h2>About This Service</h2>
+                    <p id="serviceDescription"></p>
+                </div>
+
+                <!-- Inquiry Form -->
+                <div class="inquiry-form">
+                    <h2>Request a Quote</h2>
+                    <form id="inquiryForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Full Name <span class="required">*</span></label>
+                                <input type="text" name="fullName" required placeholder="Enter your full name">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number <span class="required">*</span></label>
+                                <input type="tel" name="phone" required placeholder="+27 XX XXX XXXX">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email Address <span class="required">*</span></label>
+                            <input type="email" name="email" required placeholder="your.email@example.com">
+                        </div>
+
+                        <!-- Dynamic Fields Based on Service -->
+                        <div id="serviceSpecificFields"></div>
+
+                        <div class="form-group">
+                            <label>Additional Details</label>
+                            <textarea name="additionalDetails" placeholder="Any other information you'd like to share about your project..."></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            <span class="btn-text">Submit Inquiry</span>
+                            <div class="spinner"></div>
+                        </button>
+
+                        <div class="success-message" id="successMessage">
+                            ✓ Your inquiry has been submitted successfully! We'll contact you soon.
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Service data with specific fields
+        const servicesData = {
+            'house-plans': {
+                name: 'House Plans',
+                price: 'From R6,000',
+                image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200&q=80',
+                description: 'Our custom residential house plans are designed to meet your specific needs and lifestyle. We create functional, beautiful designs that comply with all building regulations and municipal requirements. Each plan is crafted with attention to detail, considering factors like natural light, flow, and modern living standards.',
+                fields: [
+                    { type: 'select', name: 'bedrooms', label: 'Number of Bedrooms', required: true, options: ['1', '2', '3', '4', '5', '6+'] },
+                    { type: 'select', name: 'bathrooms', label: 'Number of Bathrooms', required: true, options: ['1', '2', '3', '4', '5+'] },
+                    { type: 'number', name: 'plotSize', label: 'Plot Size (sqm)', required: true, placeholder: 'e.g., 500' },
+                    { type: 'select', name: 'stories', label: 'Number of Stories', required: true, options: ['Single Story', 'Double Story', 'Triple Story'] },
+                    { type: 'select', name: 'garage', label: 'Garage Type', required: false, options: ['No Garage', 'Single Garage', 'Double Garage', 'Triple Garage'] },
+                    { type: 'text', name: 'location', label: 'Property Location', required: true, placeholder: 'e.g., Pretoria West' }
+                ]
+            },
+            'commercial-plans': {
+                name: 'Commercial Plans',
+                price: 'From R15,000',
+                image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80',
+                description: 'Professional commercial building plans for offices, retail spaces, and industrial facilities. Designed for efficiency and compliance with commercial building codes. Our experienced team ensures your commercial project meets all safety and zoning requirements.',
+                fields: [
+                    { type: 'select', name: 'buildingType', label: 'Building Type', required: true, options: ['Office', 'Retail', 'Warehouse', 'Industrial', 'Mixed Use'] },
+                    { type: 'number', name: 'totalArea', label: 'Total Floor Area (sqm)', required: true, placeholder: 'e.g., 1000' },
+                    { type: 'number', name: 'floors', label: 'Number of Floors', required: true, placeholder: 'e.g., 2' },
+                    { type: 'number', name: 'parkingSpaces', label: 'Required Parking Spaces', required: true, placeholder: 'e.g., 20' },
+                    { type: 'text', name: 'location', label: 'Property Location', required: true, placeholder: 'e.g., Pretoria CBD' }
+                ]
+            },
+            'new-builds': {
+                name: 'New Builds',
+                price: 'From R8,500',
+                image: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1200&q=80',
+                description: 'Complete architectural and engineering services for new construction projects. From concept to construction documentation and site supervision. We guide you through every step of the building process.',
+                fields: [
+                    { type: 'select', name: 'projectType', label: 'Project Type', required: true, options: ['Residential', 'Commercial', 'Industrial', 'Mixed Use'] },
+                    { type: 'number', name: 'buildingArea', label: 'Building Area (sqm)', required: true, placeholder: 'e.g., 250' },
+                    { type: 'number', name: 'estimatedBudget', label: 'Estimated Budget (R)', required: false, placeholder: 'e.g., 1500000' },
+                    { type: 'text', name: 'location', label: 'Project Location', required: true, placeholder: 'e.g., Pretoria West' },
+                    { type: 'select', name: 'timeline', label: 'Desired Timeline', required: true, options: ['3-6 months', '6-12 months', '12+ months'] }
+                ]
+            },
+            'interior-design': {
+                name: 'Interior Design',
+                price: 'From R5,000',
+                image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1200&q=80',
+                description: 'Professional interior design services to transform your spaces. We create functional and aesthetically pleasing interiors that reflect your style. Our designers work with you to bring your vision to life.',
+                fields: [
+                    { type: 'select', name: 'spaceType', label: 'Space Type', required: true, options: ['Residential', 'Office', 'Retail', 'Restaurant', 'Other'] },
+                    { type: 'number', name: 'areaSize', label: 'Area Size (sqm)', required: true, placeholder: 'e.g., 100' },
+                    { type: 'select', name: 'rooms', label: 'Number of Rooms', required: true, options: ['1', '2', '3', '4', '5+'] },
+                    { type: 'select', name: 'designStyle', label: 'Preferred Design Style', required: false, options: ['Modern', 'Contemporary', 'Traditional', 'Industrial', 'Minimalist', 'Not Sure'] },
+                    { type: 'number', name: 'budget', label: 'Budget (R)', required: false, placeholder: 'e.g., 50000' }
+                ]
+            },
+            'alterations': {
+                name: 'Alterations & Additions',
+                price: 'From R4,500',
+                image: 'https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=1200&q=80',
+                description: 'Expert design services for home renovations, extensions, and alterations. We help maximize your existing space with smart design solutions that enhance both functionality and aesthetics.',
+                fields: [
+                    { type: 'select', name: 'alterationType', label: 'Type of Alteration', required: true, options: ['Room Addition', 'Extension', 'Renovation', 'Conversion', 'Multiple Changes'] },
+                    { type: 'number', name: 'existingSize', label: 'Current Building Size (sqm)', required: true, placeholder: 'e.g., 150' },
+                    { type: 'number', name: 'additionalSize', label: 'Additional Size Needed (sqm)', required: false, placeholder: 'e.g., 50' },
+                    { type: 'text', name: 'location', label: 'Property Location', required: true, placeholder: 'e.g., Pretoria West' }
+                ]
+            },
+            'council-submissions': {
+                name: 'Council Submissions',
+                price: 'From R3,500',
+                image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1200&q=80',
+                description: 'Professional handling of all council submissions and approvals. We manage the entire approval process to ensure compliance with local regulations and expedite your project timeline.',
+                fields: [
+                    { type: 'select', name: 'submissionType', label: 'Submission Type', required: true, options: ['Building Plans', 'Alterations', 'New Build', 'Change of Use', 'Other'] },
+                    { type: 'text', name: 'municipality', label: 'Municipality', required: true, placeholder: 'e.g., City of Tshwane' },
+                    { type: 'text', name: 'erfNumber', label: 'Erf Number', required: true, placeholder: 'e.g., ERF 1234' },
+                    { type: 'select', name: 'urgency', label: 'Urgency Level', required: true, options: ['Standard', 'Urgent', 'Very Urgent'] }
+                ]
+            },
+            'municipal-objections': {
+                name: 'Municipal Objections',
+                price: 'From R2,800',
+                image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1200&q=80',
+                description: 'Expert assistance with municipal objections and appeals. We help resolve compliance issues and navigate complex municipal requirements with professional expertise.',
+                fields: [
+                    { type: 'text', name: 'municipality', label: 'Municipality', required: true, placeholder: 'e.g., City of Tshwane' },
+                    { type: 'text', name: 'erfNumber', label: 'Erf Number', required: true, placeholder: 'e.g., ERF 1234' },
+                    { type: 'select', name: 'objectionType', label: 'Type of Objection', required: true, options: ['Building Plan Rejection', 'Zoning Issue', 'Compliance Matter', 'Appeal', 'Other'] },
+                    { type: 'text', name: 'referenceNumber', label: 'Reference Number (if any)', required: false, placeholder: 'Municipal reference number' }
+                ]
+            },
+            'special-consent': {
+                name: 'Special Consent Applications',
+                price: 'From R4,000',
+                image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80',
+                description: 'Professional town planning services for special consent applications. We handle complex zoning and land use applications efficiently with comprehensive documentation.',
+                fields: [
+                    { type: 'select', name: 'applicationType', label: 'Application Type', required: true, options: ['Rezoning', 'Land Use Change', 'Subdivision', 'Consolidation', 'Other'] },
+                    { type: 'text', name: 'municipality', label: 'Municipality', required: true, placeholder: 'e.g., City of Tshwane' },
+                    { type: 'text', name: 'erfNumber', label: 'Erf Number', required: true, placeholder: 'e.g., ERF 1234' },
+                    { type: 'text', name: 'proposedUse', label: 'Proposed Land Use', required: true, placeholder: 'e.g., Residential to Commercial' }
+                ]
+            }
+        };
+
+        // Get service ID from URL parameter
+        function getServiceFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('service') || 'house-plans';
+        }
+
+        let currentService = getServiceFromURL();
+
+        function loadServiceData() {
+            const service = servicesData[currentService];
+            if (!service) {
+                // If service not found, redirect to services page
+                window.location.href = 'services.html';
+                return;
+            }
+
+            // Update page content
+            document.getElementById('serviceName').textContent = service.name;
+            document.getElementById('servicePrice').textContent = service.price;
+            document.getElementById('serviceDescription').textContent = service.description;
+            document.getElementById('serviceImage').src = service.image;
+            document.getElementById('serviceImage').alt = service.name;
+            document.title = service.name + ' - Dikatlego Engineering';
+
+            // Generate service-specific fields
+            const fieldsContainer = document.getElementById('serviceSpecificFields');
+            fieldsContainer.innerHTML = service.fields.map(field => {
+                if (field.type === 'select') {
+                    return `
+                        <div class="form-group">
+                            <label>${field.label} ${field.required ? '<span class="required">*</span>' : ''}</label>
+                            <select name="${field.name}" ${field.required ? 'required' : ''}>
+                                <option value="">Select ${field.label}</option>
+                                ${field.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+                            </select>
+                        </div>
+                    `;
+                } else if (field.type === 'number') {
+                    return `
+                        <div class="form-group">
+                            <label>${field.label} ${field.required ? '<span class="required">*</span>' : ''}</label>
+                            <input type="number" name="${field.name}" ${field.required ? 'required' : ''} placeholder="${field.placeholder || ''}">
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="form-group">
+                            <label>${field.label} ${field.required ? '<span class="required">*</span>' : ''}</label>
+                            <input type="text" name="${field.name}" ${field.required ? 'required' : ''} placeholder="${field.placeholder || ''}">
+                        </div>
+                    `;
+                }
+            }).join('');
+        }
+
+        // Handle form submission
+        document.getElementById('inquiryForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Add loading state
+            submitBtn.disabled = true;
+            submitBtn.classList.add('loading');
+            successMessage.classList.remove('show');
+
+            // Collect form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            data.service = servicesData[currentService].name;
+
+            // Simulate API call (replace with actual API endpoint)
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            console.log('Form submitted:', data);
+            // Here you would send data to your backend:
+            // await fetch('/api/inquiries', { method: 'POST', body: JSON.stringify(data) });
+
+            // Remove loading state
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('loading');
+
+            // Show success message
+            successMessage.classList.add('show');
+
+            // Reset form
+            this.reset();
+
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+            }, 5000);
+        });
+
+        // Initialize page
+        loadServiceData();
+    </script>
+</body>
+</html>
