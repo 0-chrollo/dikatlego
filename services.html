@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>Dikatlego Engineering - Services</title>
     <style>
         * {
@@ -463,13 +465,7 @@
                 description: "Custom residential house plans designed to meet your specific needs and lifestyle. We create functional, beautiful designs that comply with all regulations.",
                 image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&q=80"
             },
-            {
-                id: 'commercial-plans',
-                name: "Commercial Plans",
-                pricing: "From R15,000",
-                description: "Professional commercial building plans for offices, retail spaces, and industrial facilities. Designed for efficiency and compliance with commercial building codes.",
-                image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80"
-            },
+
             {
                 id: 'new-builds',
                 name: "New Builds",
@@ -515,23 +511,37 @@
         ];
 
         function createServiceCard(service) {
-            return `
-                <div class="service-card">
-                    <div class="service-image">
-                        <img src="${service.image}" alt="${service.name}">
-                        <div class="pricing-badge">${service.pricing}</div>
-                    </div>
-                    <div class="service-content">
-                        <h3 class="service-name">${service.name}</h3>
-                        <p class="service-description">${service.description}</p>
+    const isHousePlans = service.id === "house-plans";
+
+    return `
+        <div class="service-card">
+            <div class="service-image">
+                <img src="${service.image}" alt="${service.name}">
+                <div class="pricing-badge">${service.pricing}</div>
+            </div>
+            <div class="service-content">
+                <h3 class="service-name">${service.name}</h3>
+                <p class="service-description">${service.description}</p>
+
+                ${
+                    isHousePlans
+                    ? `
+                        <button class="inquire-btn purchase-btn" onclick="handleInquiry('house-plans')">
+                            Purchase <i class="fas fa-shopping-cart"></i>
+                        </button>
+                      `
+                    : `
                         <button class="inquire-btn" onclick="handleInquiry('${service.id}')">
                             Inquire Now
                             <span>+</span>
                         </button>
-                    </div>
-                </div>
-            `;
-        }
+                      `
+                }
+            </div>
+        </div>
+    `;
+}
+
 
         function renderServices() {
             const grid = document.getElementById('servicesGrid');
@@ -539,13 +549,19 @@
         }
 
         function handleInquiry(serviceId) {
-            // Redirect to service detail page with service ID
-            window.location.href = 'service-detail.html?service=' + serviceId;
-        }
+    if (serviceId === "house-plans") {
+        // Direct redirect to house plans page
+        window.location.href = "house-plans.html";
+    } else {
+        // Default route for all other services
+        window.location.href = "service-detail.html?service=" + serviceId;
+    }
+}
+
 
         // Initialize
         renderServices();
     </script>
-</section>and
+</section>
 </body>
 </html>

@@ -4,23 +4,704 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+  
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+        }
+
+        .back-btn {
+            background: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #333;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .cart-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+        }
+
+        .cart-items {
+            background: white;
+            border-radius: 2px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            transition: background 0.3s ease;
+        }
+
+        .cart-item:hover {
+            background: #f9f9f9;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 1px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .item-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .item-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .item-specs {
+            display: flex;
+            gap: 15px;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .item-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color:  #222222;
+        }
+
+        .item-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .remove-btn {
+            background: #ffc42f;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 1px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            background:  #b98605;
+            transform: scale(1.05);
+        }
+
+        .cart-summary {
+            background: white;
+            border-radius: 2px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .summary-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .summary-row.total {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            padding-top: 15px;
+            border-top: 2px solid #eee;
+            margin-top: 15px;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: linear-gradient(135deg,  #ffc42f 0%,  #ca9717 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 2px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .checkout-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .empty-cart {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 80px 20px;
+            background: white;
+            border-radius: 2px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .empty-cart svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .empty-cart h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .empty-cart p {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .continue-shopping {
+            background: #ca9717;
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 1px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .continue-shopping:hover {
+            background: #e1cb92;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 968px) {
+            .cart-content {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-summary {
+                position: static;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .cart-item {
+                flex-direction: column;
+            }
+
+            .item-image {
+                width: 100%;
+                height: 200px;
+            }
+        }
+    </style>
 </head>
+
+
+
+
+
+
+
+
+
+
+
+
+
 <body>
 
-    <nav class="navbar">
-        <a href="index.html">Home</a>
-        <a href="cart.html">🛒 Cart (<span id="cart-count">0</span>)</a>
+
+
+   
+
+    <style>
+
+    
+        /* Navbar Styles */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(135deg, #e8ae1a 0%, #755d21);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0.5rem 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #ffd25f;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            height: 60px;
+        }
+
+        .logo img {
+            height: 150px;
+            width: 150px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #667eea;
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu li a:hover {
+            color: #667eea;
+        }
+
+        .nav-menu li a:hover::after {
+            width: 100%;
+        }
+
+        /* Cart Icon Styles */
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+        }
+
+        .cart-icon svg {
+            width: 28px;
+            height: 28px;
+            stroke: #fff;
+            fill: none;
+            stroke-width: 2;
+            transition: stroke 0.3s ease;
+        }
+
+        .cart-icon:hover svg {
+            stroke: #010516;
+        }
+
+        .cart-counter {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4444;
+            color: rgb(255, 255, 255);
+            font-size: 12px;
+            font-weight: bold;
+            min-width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Right side container for cart and burger */
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Burger Menu */
+        .burger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .burger span {
+            width: 25px;
+            height: 3px;
+            background: #ffffff;
+            border-radius: 0px;
+            transition: all 0.3s ease;
+        }
+
+        /* Burger Animation */
+        .burger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .burger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .burger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Content */
+        .content {
+            padding-top: 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            color: white;
+        }
+
+        .content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .content p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .burger {
+                display: flex;
+            }
+
+            .nav-menu {
+                color: #fff;
+                border-top: 3.5px solid #ffd25f;
+                border-bottom: 3.5px solid #ffd25f;
+                position: fixed;
+                left: 0;
+                top: 70px;
+                flex-direction: column;
+                background: linear-gradient(135deg, #e8ae1a 0%, rgb(69, 83, 108));
+                width: 100%;
+                text-align: center;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.4s ease-in-out;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-menu.active {
+                max-height: 400px;
+            }
+
+            .nav-menu li {
+                color: #fff;
+                padding: 1.5rem 0;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            }
+
+            .nav-menu li a::after {
+                display: none;
+            }
+
+            .content h1 {
+                font-size: 2rem;
+                color: #fff;
+            }
+
+            .content p {
+                font-size: 1rem;
+                color: #fff;
+            }
+        }
+    </style>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <img src="logo.png" alt="Logo">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="services.html">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Portfolio</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-right">
+                <div class="cart-icon mobile-cart">
+
+
+
+
+                   
+                </div>
+                <div class="burger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
     </nav>
 
-    <h1>Your Shopping Cart</h1>
-    <ul id="cart-items">
-        </ul>
+ 
+    <script>
+        const burger = document.querySelector('.burger');
+        const navMenu = document.querySelector('.nav-menu');
+        const navLinks = document.querySelectorAll('.nav-menu li a');
+
+        // Toggle menu
+        burger.addEventListener('click', () => {
+            burger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                burger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!burger.contains(e.target) && !navMenu.contains(e.target)) {
+                burger.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+        });
+
+        // Cart click handler (optional)
+        document.querySelectorAll('.cart-icon').forEach(cart => {
+            cart.addEventListener('click', () => {
+                alert('');
+            });
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="container">
+        <div class="header">
+            <h1>Shopping Cart</h1>
+            <a href="house-plans.html" class="back-btn">← Continue Shopping</a>
+        </div>
+
+        <div class="cart-content" id="cartContent">
+            <!-- Cart items will be rendered here -->
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
     
-    <p>Total: **$<span id="cart-total">0.00</span>**</p>
-
-    <button class="checkout-placeholder">Proceed to Checkout (Not Implemented)</button>
-
-    <script src="script.js"></script>
+        function loadCart() {
+            const savedCart = localStorage.getItem('housePlansCart');
+    
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+            } else {
+                cart = [];
+            }
+    
+            renderCart();
+        }
+    
+        function saveCart() {
+            localStorage.setItem('housePlansCart', JSON.stringify(cart));
+        }
+    
+        function renderCart() {
+            const cartContent = document.getElementById('cartContent');
+    
+            if (cart.length === 0) {
+                cartContent.innerHTML = `
+                    <div class="empty-cart">
+                        <h2>Your Cart is Empty</h2>
+                        <p>Add some house plans to continue.</p>
+                        <a href="house-plans.html" class="continue-shopping">Browse Plans</a>
+                    </div>
+                `;
+                return;
+            }
+    
+            const itemsHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div class="item-image">
+                        <img src="${item.image}" alt="${item.name}">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-specs">
+                            🛏️ ${item.bedrooms} |
+                            🚿 ${item.bathrooms} |
+                            🚗 ${item.garages} |
+                            📐 ${item.sqm}m²
+                        </div>
+                    </div>
+    
+                    <div class="item-actions">
+                        <div class="item-price">R${item.price.toLocaleString()}</div>
+                        <button class="remove-btn" onclick="removeFromCart(${item.id})">
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+    
+            const subtotal = cart.reduce((t, i) => t + i.price, 0);
+            const vat = subtotal * 0.15;
+            const total = subtotal + vat;
+    
+            cartContent.innerHTML = `
+                <div class="cart-items">${itemsHTML}</div>
+    
+                <div class="cart-summary">
+                    <h3>Order Summary</h3>
+                    <div class="summary-row"><span>Subtotal</span><span>R${subtotal.toLocaleString()}</span></div>
+                    <div class="summary-row"><span>VAT (15%)</span><span>R${vat.toFixed(2)}</span></div>
+                    <div class="summary-row total"><span>Total</span><span>R${total.toFixed(2)}</span></div>
+    
+                    <button class="checkout-btn" onclick="checkout()">Checkout</button>
+                </div>
+            `;
+        }
+    
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            saveCart();
+            renderCart();
+        }
+    
+        function checkout() {
+            if (cart.length === 0) return alert("Cart is empty!");
+    
+            alert("Thank you! Proceeding to checkout...");
+            cart = [];
+            saveCart();
+            renderCart();
+        }
+    
+        loadCart();
+    </script>
+    
 </body>
 </html>
