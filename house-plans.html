@@ -637,18 +637,45 @@
         </div>
     </nav>
 
+    <div id="cartPopup" class="cart-popup">Added to cart ✓</div>
+<style>
+    
+    .cart-popup {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #28a745;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    transition: all 0.4s ease;
+    z-index: 9999;
+}
+
+.cart-popup.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+</style>
  
     <script>
         const burger = document.querySelector('.burger');
         const navMenu = document.querySelector('.nav-menu');
         const navLinks = document.querySelectorAll('.nav-menu li a');
-
+    
         // Toggle menu
         burger.addEventListener('click', () => {
             burger.classList.toggle('active');
             navMenu.classList.toggle('active');
         });
-
+    
         // Close menu when clicking on a link
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
@@ -656,7 +683,7 @@
                 navMenu.classList.remove('active');
             });
         });
-
+    
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
             if (!burger.contains(e.target) && !navMenu.contains(e.target)) {
@@ -664,14 +691,22 @@
                 navMenu.classList.remove('active');
             }
         });
+    
+        // ---------- NEW POPUP FUNCTION ----------
+    function showCartPopup() {
+        const popup = document.getElementById("cartPopup");
+        popup.classList.add("show");
+        setTimeout(() => popup.classList.remove("show"), 2000);
+    }
 
-        // Cart click handler (optional)
-        document.querySelectorAll('.cart-icon').forEach(cart => {
-            cart.addEventListener('click', () => {
-                alert('');
-            });
+    // Replace old alert with popup
+    document.querySelectorAll('.cart-icon').forEach(cart => {
+        cart.addEventListener('click', () => {
+            showCartPopup(); // show the popup instead of alert('')
         });
+    });
     </script>
+    
 
 
 
