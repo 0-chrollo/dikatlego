@@ -684,6 +684,7 @@
             });
         });
     
+
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
             if (!burger.contains(e.target) && !navMenu.contains(e.target)) {
@@ -696,7 +697,7 @@
     function showCartPopup() {
         const popup = document.getElementById("cartPopup");
         popup.classList.add("show");
-        setTimeout(() => popup.classList.remove("show"), 2000);
+        setTimeout(() => popup.classList.remove("show"), 10);
     }
 
     // Replace old alert with popup
@@ -912,97 +913,106 @@
         ];
 
         let filteredPlans = [...housePlans];
-    let cart = [];
+let cart = [];
 
-    // Load cart from localStorage
-    function loadCart() {
-        const savedCart = localStorage.getItem('housePlansCart');
-        if (savedCart) {
-            cart = JSON.parse(savedCart);
-        } else {
-            cart = [];
-        }
-        updateCartDisplay();
-    }
+// Load cart from localStorage
+function loadCart() {
+    const savedCart = localStorage.getItem('housePlansCart');
+    cart = savedCart ? JSON.parse(savedCart) : [];
+    updateCartDisplay();
+}
 
-    function saveCart() {
-        localStorage.setItem('housePlansCart', JSON.stringify(cart));
-        updateCartDisplay();
-    }
+function saveCart() {
+    localStorage.setItem('housePlansCart', JSON.stringify(cart));
+    updateCartDisplay();
+}
 
-    function createPlanCard(plan) {
-        const isInCart = cart.some(item => item.id === plan.id);
+// Show small green popup
+function showAddedPopup() {
+    const popup = document.getElementById("addedPopup");
+    popup.style.opacity = "1";
+    popup.style.transform = "translateY(0)";
 
-        return `
-            <div class="plan-card">
-                <div class="plan-image">
-                    <img src="${plan.image}" alt="${plan.name}">
-                    ${plan.featured ? '<div class="plan-badge">Popular</div>' : ''}
+    setTimeout(() => {
+        popup.style.opacity = "0";
+        popup.style.transform = "translateY(-20px)";
+    }, 1200);
+}
+
+function createPlanCard(plan) {
+    const isInCart = cart.some(item => item.id === plan.id);
+
+    return `
+        <div class="plan-card">
+            <div class="plan-image">
+                <img src="${plan.image}" alt="${plan.name}">
+                ${plan.featured ? '<div class="plan-badge">Popular</div>' : ''}
+            </div>
+            <div class="plan-content">
+                <h3 class="plan-title">${plan.name}</h3>
+                
+                <div class="plan-specs">
+                    <span>🛏️ ${plan.bedrooms}</span>
+                    <span>🚿 ${plan.bathrooms}</span>
+                    <span>🚗 ${plan.garages}</span>
                 </div>
-                <div class="plan-content">
-                    <h3 class="plan-title">${plan.name}</h3>
-                    
-                    <div class="plan-specs">
-                        <span>🛏️ ${plan.bedrooms}</span>
-                        <span>🚿 ${plan.bathrooms}</span>
-                        <span>🚗 ${plan.garages}</span>
-                    </div>
 
-                    <div class="plan-price">R${plan.price.toLocaleString()}</div>
+                <div class="plan-price">R${plan.price.toLocaleString()}</div>
 
-                    <div class="plan-actions">
-                        <button class="view-btn" onclick="viewPlan(${plan.id})">
-                            View Details
-                        </button>
+                <div class="plan-actions">
+                    <button class="view-btn" onclick="viewPlan(${plan.id})">
+                        View Details
+                    </button>
 
-                        <button 
-                            id="cart-btn-${plan.id}"
-                            class="cart-btn ${isInCart ? 'in-cart' : ''}"
-                            onclick="addToCart(${plan.id})"
-                            ${isInCart ? 'disabled' : ''}>
-                            ${isInCart ? 'In Cart' : 'Add to Cart'}
-                        </button>
-                    </div>
+                    <button 
+                        id="cart-btn-${plan.id}"
+                        class="cart-btn ${isInCart ? 'in-cart' : ''}"
+                        onclick="addToCart(${plan.id})"
+                        ${isInCart ? 'disabled' : ''}>
+                        ${isInCart ? 'In Cart' : 'Add to Cart'}
+                    </button>
                 </div>
             </div>
-        `;
+        </div>
+    `;
+}
+
+function renderPlans() {
+    const grid = document.getElementById('plansGrid');
+    grid.innerHTML = filteredPlans.map(plan => createPlanCard(plan)).join('');
+}
+
+function addToCart(planId) {
+    const plan = housePlans.find(p => p.id === planId);
+
+    if (!cart.some(item => item.id === planId)) {
+        cart.push(plan);
+        saveCart();
+        showAddedPopup();
     }
 
-    function renderPlans() {
-        const grid = document.getElementById('plansGrid');
-        grid.innerHTML = filteredPlans.map(plan => createPlanCard(plan)).join('');
-    }
+    const button = document.getElementById(`cart-btn-${planId}`);
+    button.textContent = "In Cart";
+    button.classList.add("in-cart");
+    button.disabled = true;
+}
 
-    function addToCart(planId) {
-        const plan = housePlans.find(p => p.id === planId);
+function updateCartDisplay() {
+    const count = document.getElementById("cartCount");
+    if (count) count.textContent = cart.length;
+}
 
-        if (!cart.some(item => item.id === planId)) {
-            cart.push(plan);
-            saveCart();
-        }
+function goToCart() {
+    window.location.href = "cart.html";
+}
 
-        const button = document.getElementById(`cart-btn-${planId}`);
-        button.textContent = "In Cart";
-        button.classList.add("in-cart");
-        button.disabled = true;
-    }
+function viewPlan(id) {
+    alert("Viewing plan " + id);
+}
 
-    function updateCartDisplay() {
-        const count = document.getElementById("cartCount");
-        if (count) count.textContent = cart.length;
-    }
-
-    function goToCart() {
-        window.location.href = "cart.html";
-    }
-
-    function viewPlan(id) {
-        alert("Viewing plan " + id);
-    }
-
-    // Initialize
-    loadCart();
-    renderPlans();
+// Initialize
+loadCart();
+renderPlans();
 </script>
 </body>
 </html>

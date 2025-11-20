@@ -194,17 +194,15 @@
 
 
 
-
     <style>
-  
 
+    
         /* Navbar Styles */
         nav {
-           
             position: fixed;
             top: 0;
             width: 100%;
-            background: linear-gradient(135deg,  #e8ae1a 0%,  #755d21);
+            background: linear-gradient(135deg, #e8ae1a 0%, #755d21);
             backdrop-filter: blur(10px);
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
             z-index: 1000;
@@ -217,8 +215,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 3px solid  #ffd25f;
-            
+            border-bottom: 3px solid #ffd25f;
         }
 
         .logo {
@@ -229,19 +226,17 @@
         }
 
         .logo img {
-            height:150px;
+            height: 150px;
             width: 150px;
-            
-           
         }
 
         .nav-menu {
             display: flex;
             list-style: none;
             gap: 2rem;
+            align-items: center;
         }
 
-        
         .nav-menu li a {
             text-decoration: none;
             color: #fff;
@@ -267,6 +262,55 @@
 
         .nav-menu li a:hover::after {
             width: 100%;
+        }
+
+        /* Cart Icon Styles */
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+        }
+
+        .cart-icon svg {
+            width: 28px;
+            height: 28px;
+            stroke: #fff;
+            fill: none;
+            stroke-width: 2;
+            transition: stroke 0.3s ease;
+        }
+
+        .cart-icon:hover svg {
+            stroke: #010516;
+        }
+
+        .cart-counter {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4444;
+            color: rgb(255, 255, 255);
+            font-size: 12px;
+            font-weight: bold;
+            min-width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Right side container for cart and burger */
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
         /* Burger Menu */
@@ -326,13 +370,13 @@
 
             .nav-menu {
                 color: #fff;
-                border-top: 3.5px solid  #ffd25f;
-                border-bottom: 3.5px solid  #ffd25f;
+                border-top: 3.5px solid #ffd25f;
+                border-bottom: 3.5px solid #ffd25f;
                 position: fixed;
                 left: 0;
                 top: 70px;
                 flex-direction: column;
-                background: linear-gradient(135deg, #e8ae1a  0%, rgb(69, 83, 108));
+                background: linear-gradient(135deg, #e8ae1a 0%, rgb(69, 83, 108));
                 width: 100%;
                 text-align: center;
                 gap: 0;
@@ -354,7 +398,6 @@
 
             .nav-menu li a::after {
                 display: none;
-
             }
 
             .content h1 {
@@ -375,31 +418,145 @@
                 <img src="logo.png" alt="Logo">
             </a>
             <ul class="nav-menu">
-                <li><a href="#home">Home</a></li>
+                <li><a href="services.html">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#services">Portfolio</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
-            <div class="burger">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="nav-right">
+                <div class="cart-icon mobile-cart">
+
+
+
+                    <button style="background-color:transparent; border: none;" class="cart-icon-btn" onclick="goToCart()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+                        </svg>
+                        <span class="cart-counter" id="cartCount">0</span>
+                    </button>
+
+
+                   
+
+
+
+
+
+
+
+                    <script>
+                        // Load cart from localStorage
+                        function loadCart() {
+                            const savedCart = localStorage.getItem("housePlansCart"); // FIXED
+                            return savedCart ? JSON.parse(savedCart) : [];
+                        }
+                        
+                        // Save cart to localStorage
+                        function saveCart(cart) {
+                            localStorage.setItem("housePlansCart", JSON.stringify(cart)); // FIXED
+                        }
+                        
+                        // Update cart count bubble
+                        function updateCartCounter() {
+                            const cart = loadCart();
+                            const countEl = document.getElementById("cartCount");
+                            if (countEl) {
+                                countEl.textContent = cart.length;
+                            }
+                        }
+                        
+                        // Add item to cart (if ever needed)
+                        function addToCart(product) {
+                            const cart = loadCart();
+                    
+                            if (!cart.find(item => item.id === product.id)) {
+                                cart.push(product);
+                                saveCart(cart);
+                            }
+                            
+                            updateCartCounter();
+                        }
+                        
+                        // Redirect to cart
+                        function goToCart() {
+                            window.location.href = "cart.html";
+                        }
+                        
+                        // Load counter on page load
+                        document.addEventListener("DOMContentLoaded", updateCartCounter);
+                    </script>
+                    
+                        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+                <div class="burger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </div>
         </div>
     </nav>
 
+    <div id="cartPopup" class="cart-popup">Added to cart ✓</div>
+<style>
+    
+    .cart-popup {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #28a745;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    transition: all 0.4s ease;
+    z-index: 9999;
+}
 
+.cart-popup.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+</style>
+ 
     <script>
         const burger = document.querySelector('.burger');
         const navMenu = document.querySelector('.nav-menu');
         const navLinks = document.querySelectorAll('.nav-menu li a');
-
+    
         // Toggle menu
         burger.addEventListener('click', () => {
             burger.classList.toggle('active');
             navMenu.classList.toggle('active');
         });
-
+    
         // Close menu when clicking on a link
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
@@ -407,7 +564,8 @@
                 navMenu.classList.remove('active');
             });
         });
-
+    
+        
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
             if (!burger.contains(e.target) && !navMenu.contains(e.target)) {
@@ -415,10 +573,10 @@
                 navMenu.classList.remove('active');
             }
         });
+    
+    
     </script>
-
-
-
+    
 
 
 
