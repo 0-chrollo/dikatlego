@@ -639,32 +639,69 @@
                 { type: 'text', name: 'location', label: 'Property Location', required: true, placeholder: 'e.g., Pretoria West' }
             ]
         },
-        'commercial-plans': {
-            name: 'Commercial Plans',
-            price: 'From R15,000',
-            image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80',
-            description: 'Professional commercial building plans for offices, retail spaces, and industrial facilities. Designed for efficiency and compliance with commercial building codes.',
-            fields: [
-                { type: 'select', name: 'buildingType', label: 'Building Type', required: true, options: ['Office', 'Retail', 'Warehouse', 'Industrial', 'Mixed Use'] },
-                { type: 'number', name: 'totalArea', label: 'Total Floor Area (sqm)', required: true, placeholder: 'e.g., 1000' },
-                { type: 'number', name: 'floors', label: 'Number of Floors', required: true, placeholder: 'e.g., 2' },
-                { type: 'number', name: 'parkingSpaces', label: 'Required Parking Spaces', required: true, placeholder: 'e.g., 20' },
-                { type: 'text', name: 'location', label: 'Property Location', required: true, placeholder: 'e.g., Pretoria CBD' }
-            ]
-        },
+
         'new-builds': {
-            name: 'New Builds',
-            price: 'From R8,500',
-            image: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1200&q=80',
-            description: 'Complete architectural and engineering services for new construction projects. From concept to construction documentation and site supervision.',
-            fields: [
-                { type: 'select', name: 'projectType', label: 'Project Type', required: true, options: ['Residential', 'Commercial', 'Industrial', 'Mixed Use'] },
-                { type: 'number', name: 'buildingArea', label: 'Building Area (sqm)', required: true, placeholder: 'e.g., 250' },
-                { type: 'number', name: 'estimatedBudget', label: 'Estimated Budget (R)', required: false, placeholder: 'e.g., 1500000' },
-                { type: 'text', name: 'location', label: 'Project Location', required: true, placeholder: 'e.g., Pretoria West' },
-                { type: 'select', name: 'timeline', label: 'Desired Timeline', required: true, options: ['3-6 months', '6-12 months', '12+ months'] }
-            ]
-        },
+                name: 'New Builds',
+                price: 'From R8,500',
+                image: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1200&q=80',
+                description: 'Complete architectural and engineering services for new construction projects. From concept to construction documentation and site supervision. We guide you through every step of the building process.',
+                fields: [
+                    { 
+                        type: 'checkbox-group', 
+                        name: 'projectType', 
+                        label: 'Type of Project', 
+                        required: true, 
+                        options: [
+                            { value: 'new-house', label: 'New House' },
+                            { value: 'extension', label: 'Extension' },
+                            { value: 'renovation', label: 'Renovation' },
+                            { value: 'commercial', label: 'Commercial' }
+                        ]
+                    },
+                    { type: 'text', name: 'standErfNumber', label: 'Stand / Erf Number', required: false, placeholder: 'e.g., ERF 1234' },
+                    { type: 'text', name: 'municipalityArea', label: 'Municipality / Area', required: true, placeholder: 'e.g., City of Tshwane' },
+                    { type: 'number', name: 'approximateBudget', label: 'Approximate Budget (R)', required: false, placeholder: 'e.g., 1500000' },
+                    { type: 'select', name: 'bedrooms', label: 'Number of Bedrooms', required: true, options: ['1', '2', '3', '4', '5', '6+'] },
+                    { type: 'select', name: 'bathrooms', label: 'Number of Bathrooms', required: true, options: ['1', '2', '3', '4', '5+'] },
+                    { 
+                        type: 'checkbox-group', 
+                        name: 'garageCarport', 
+                        label: 'Garage / Carport', 
+                        required: false, 
+                        options: [
+                            { value: 'yes', label: 'Yes' },
+                            { value: 'no', label: 'No' }
+                        ]
+                    },
+                    { 
+                        type: 'checkbox-group', 
+                        name: 'preferredStyle', 
+                        label: 'Preferred Style', 
+                        required: false, 
+                        options: [
+                            { value: 'modern', label: 'Modern' },
+                            { value: 'traditional', label: 'Traditional' },
+                            { value: 'tuscan', label: 'Tuscan' },
+                            { value: 'other', label: 'Other' }
+                        ]
+                    },
+                    { type: 'textarea', name: 'specialFeatures', label: 'Special Features', required: false, placeholder: 'e.g., balcony, open plan, office, etc.' },
+                    { 
+                        type: 'checkbox-group', 
+                        name: 'projectPurpose', 
+                        label: 'Project Purpose', 
+                        required: true, 
+                        options: [
+                            { value: 'building', label: 'For Building' },
+                            { value: 'municipal-submission', label: 'For Municipal Submission' },
+                            { value: 'selling-investment', label: 'For Selling / Investment' },
+                            { value: 'other', label: 'Other' }
+                        ]
+                    },
+                    { type: 'text', name: 'designStartDate', label: 'When do you want to start the design?', required: false, placeholder: 'e.g., January 2025' },
+                    { type: 'text', name: 'constructionStartDate', label: 'When do you plan to start construction?', required: false, placeholder: 'e.g., March 2025' }
+                ]
+            },
         'interior-design': {
             name: 'Interior Design',
             price: 'From R5,000',
