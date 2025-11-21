@@ -550,61 +550,56 @@
 
 
                     <script>
-                        // Load cart from localStorage
+                        // UNIVERSAL CART HANDLER
+                        let cart = [];
+                        
+                        // Load cart
                         function loadCart() {
-                            const savedCart = localStorage.getItem("housePlansCart"); // FIXED
-                            return savedCart ? JSON.parse(savedCart) : [];
+                            const savedCart = localStorage.getItem("housePlansCart");
+                            cart = savedCart ? JSON.parse(savedCart) : [];
+                            updateCartCounter();
                         }
                         
-                        // Save cart to localStorage
-                        function saveCart(cart) {
-                            localStorage.setItem("housePlansCart", JSON.stringify(cart)); // FIXED
+                        // Save cart
+                        function saveCart() {
+                            localStorage.setItem("housePlansCart", JSON.stringify(cart));
+                            updateCartCounter();
                         }
                         
-                        // Update cart count bubble
+                        // Update nav cart count
                         function updateCartCounter() {
-                            const cart = loadCart();
                             const countEl = document.getElementById("cartCount");
                             if (countEl) {
                                 countEl.textContent = cart.length;
                             }
                         }
                         
-                        // Add item to cart (if ever needed)
-                        function addToCart(product) {
-                            const cart = loadCart();
-                    
-                            if (!cart.find(item => item.id === product.id)) {
-                                cart.push(product);
-                                saveCart(cart);
+                        // Add item to cart (called from house-plans)
+                        function addToCart(item) {
+                            if (!cart.find(p => p.id === item.id)) {
+                                cart.push(item);
+                                saveCart();
                             }
-                            
-                            updateCartCounter();
                         }
                         
-                        // Redirect to cart
+                        // Remove from cart
+                        function removeFromCart(id) {
+                            cart = cart.filter(i => i.id !== id);
+                            saveCart();
+                            renderCart();
+                        }
+                        
+                        // Redirect
                         function goToCart() {
                             window.location.href = "cart.html";
                         }
                         
-                        // Load counter on page load
-                        document.addEventListener("DOMContentLoaded", updateCartCounter);
-                    </script>
-                    
+                        // Auto-load on every page
+                        document.addEventListener("DOMContentLoaded", loadCart);
+                        </script>
                         
+                    
 
-
-
-
-                 
-
-
-
-
-
-
-
-                   
                 </div>
                 <div class="burger">
                     <span></span>
@@ -643,37 +638,16 @@
             }
         });
 
-        // Cart click handler (optional)
-        document.querySelectorAll('.cart-icon').forEach(cart => {
-            cart.addEventListener('click', () => {
-                alert('');
-            });
-        });
+
     </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<br>
-<br>
-<br>
 <br>
 
+<br>
 
+<br>
 
-
+<br>
 <div class="all">
 
     <div class="container">
@@ -685,27 +659,9 @@
     </div>
 
     <script>
-        let cart = [];
-    
-        function loadCart() {
-            const savedCart = localStorage.getItem('housePlansCart');
-    
-            if (savedCart) {
-                cart = JSON.parse(savedCart);
-            } else {
-                cart = [];
-            }
-    
-            renderCart();
-        }
-    
-        function saveCart() {
-            localStorage.setItem('housePlansCart', JSON.stringify(cart));
-        }
-    
         function renderCart() {
             const cartContent = document.getElementById('cartContent');
-    
+        
             if (cart.length === 0) {
                 cartContent.innerHTML = `
                     <div class="empty-cart">
@@ -716,7 +672,7 @@
                 `;
                 return;
             }
-    
+        
             const itemsHTML = cart.map(item => `
                 <div class="cart-item">
                     <div class="item-image">
@@ -731,7 +687,7 @@
                             📐 ${item.sqm}m²
                         </div>
                     </div>
-    
+        
                     <div class="item-actions">
                         <div class="item-price">R${item.price.toLocaleString()}</div>
                         <button class="remove-btn" onclick="removeFromCart(${item.id})">
@@ -740,44 +696,41 @@
                     </div>
                 </div>
             `).join('');
-    
+        
             const subtotal = cart.reduce((t, i) => t + i.price, 0);
             const vat = subtotal * 0.15;
             const total = subtotal + vat;
-    
+        
             cartContent.innerHTML = `
                 <div class="cart-items">${itemsHTML}</div>
-    
                 <div class="cart-summary">
                     <h3>Order Summary</h3>
                     <div class="summary-row"><span>Subtotal</span><span>R${subtotal.toLocaleString()}</span></div>
                     <div class="summary-row"><span>VAT (15%)</span><span>R${vat.toFixed(2)}</span></div>
                     <div class="summary-row total"><span>Total</span><span>R${total.toFixed(2)}</span></div>
-    
+        
                     <button class="checkout-btn" onclick="checkout()">Checkout</button>
                     </br>
                     <a href="house-plans.html" class="back-btn">← Continue Shopping</a>
                 </div>
             `;
         }
-    
-        function removeFromCart(id) {
-            cart = cart.filter(item => item.id !== id);
-            saveCart();
-            renderCart();
-        }
-    
+        
         function checkout() {
             if (cart.length === 0) return alert("Cart is empty!");
-    
+        
             alert("Thank you! Proceeding to checkout...");
             cart = [];
             saveCart();
             renderCart();
         }
-    
-        loadCart();
-    </script>
+        
+        // Render cart after universal loadCart() runs
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(renderCart, 50);
+        });
+        </script>
+        
     </div>
 </body>
 </html>
